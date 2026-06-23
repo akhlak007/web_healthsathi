@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F8FAFC"/>
+  <circle cx="112" cy="98" r="220" fill="#14B8A6" opacity="0.18"/>
+  <circle cx="1050" cy="540" r="260" fill="#F9735B" opacity="0.14"/>
+  <rect x="92" y="82" width="1016" height="466" rx="42" fill="#0F172A"/>
+  <rect x="122" y="112" width="956" height="406" rx="30" fill="#FFFFFF" opacity="0.08"/>
+  <text x="170" y="210" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800" fill="#FFFFFF">HealthSathi</text>
+  <text x="170" y="285" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="600" fill="#99F6E4">Digital Health for Bangladesh</text>
+  <text x="170" y="355" font-family="Inter, Arial, sans-serif" font-size="28" fill="#CBD5E1">Empowering Doctors, Connecting Patients, Advancing Medical Knowledge.</text>
+  <rect x="170" y="412" width="214" height="58" rx="29" fill="#14B8A6"/>
+  <text x="202" y="450" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">Consent-first</text>
+  <rect x="414" y="412" width="220" height="58" rx="29" fill="#FFFFFF"/>
+  <text x="447" y="450" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#0F172A">Research-safe</text>
+  <path d="M902 212c-54 0-98 44-98 98s44 98 98 98 98-44 98-98-44-98-98-98Zm-46 107h31l14-41 27 74 17-33h39" fill="none" stroke="#14B8A6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
