@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { FormEvent, useRef, useState } from "react";
+import { LoaderCircle, Trash2 } from "lucide-react";
+import { contentConfig } from "@/config/contentConfig";
 
 type FormState = {
   fullName: string;
@@ -17,11 +18,25 @@ const initialFormState: FormState = {
   reason: ""
 };
 
+const configurationErrorMessage =
+  "Account deletion service is not connected yet. Please contact support while Firebase setup is completed.";
+const rateLimitWindowMs = 60_000;
+const rateLimitStorageKey = "healthsathi-delete-account-last-submit";
+
+const sanitizeText = (value: string, maxLength: number) =>
+  value
+    .replace(/[\u0000-\u001F\u007F]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
+
 export function GooglePlayDeletionForm() {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const submittingRef = useRef(false);
+  const lastSubmittedAtRef = useRef(0);
 
   const updateField = (field: keyof FormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -29,19 +44,34 @@ export function GooglePlayDeletionForm() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (submittingRef.current) {
+      return;
+    }
+
     setSuccessMessage("");
     setErrorMessage("");
 
-    const fullName = form.fullName.trim();
-    const email = form.email.trim();
-    const phone = form.phone.trim();
-    const reason = form.reason.trim();
+    const fullName = sanitizeText(form.fullName, 120);
+    const email = sanitizeText(form.email, 254).toLowerCase();
+    const phone = sanitizeText(form.phone, 30);
+    const reason = sanitizeText(form.reason, 1000);
 
     if (!fullName || !email || !phone) {
       setErrorMessage("Full name, email, and phone number are required.");
       return;
     }
 
+    const storedSubmitTime = Number(window.sessionStorage.getItem(rateLimitStorageKey) || "0");
+    const lastSubmittedAt = Math.max(lastSubmittedAtRef.current, Number.isFinite(storedSubmitTime) ? storedSubmitTime : 0);
+    const now = Date.now();
+
+    if (now - lastSubmittedAt < rateLimitWindowMs) {
+      setErrorMessage("Please wait a minute before submitting another deletion request.");
+      return;
+    }
+
+    submittingRef.current = true;
     setLoading(true);
 
     try {
@@ -51,9 +81,11 @@ export function GooglePlayDeletionForm() {
       ]);
 
       if (!db) {
-        throw new Error(
+        console.error(
           `Firebase is not configured. Missing: ${missingFirebaseEnv.join(", ") || "Firestore configuration"}.`
         );
+        setErrorMessage(`${configurationErrorMessage} Email: ${contentConfig.site.supportEmail}`);
+        return;
       }
 
       await addDoc(collection(db, "deletion_requests"), {
@@ -65,11 +97,19 @@ export function GooglePlayDeletionForm() {
         createdAt: serverTimestamp()
       });
 
+      lastSubmittedAtRef.current = now;
+      window.sessionStorage.setItem(rateLimitStorageKey, String(now));
       setForm(initialFormState);
-      setSuccessMessage("Your account deletion request has been submitted successfully.");
+      setSuccessMessage(
+        "Your account deletion request has been submitted successfully. Our team will verify and process it."
+      );
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Unable to submit request. Please try again.");
+      console.error(error);
+      setErrorMessage(
+        `Unable to submit request right now. Please try again or email ${contentConfig.site.supportEmail}.`
+      );
     } finally {
+      submittingRef.current = false;
       setLoading(false);
     }
   };
@@ -85,6 +125,10 @@ export function GooglePlayDeletionForm() {
         </span>
         <h2 className="text-2xl font-semibold text-navy dark:text-white">Request Account Deletion</h2>
       </div>
+      <p className="mt-4 rounded-2xl bg-paper p-4 text-sm leading-7 text-slate-600 dark:bg-slate-950/50 dark:text-slate-300">
+        Submitting this request will permanently remove your HealthSathi account and associated data after
+        verification.
+      </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
@@ -138,13 +182,21 @@ export function GooglePlayDeletionForm() {
         disabled={loading}
         className="focus-ring mt-6 w-full rounded-full bg-gradient-to-r from-brand-500 via-accent to-coral px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:-translate-y-1 hover:shadow-premium disabled:cursor-not-allowed disabled:from-slate-300 disabled:via-slate-300 disabled:to-slate-300 disabled:shadow-none"
       >
-        {loading ? "Submitting..." : "Submit Deletion Request"}
+        {loading ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+            Submitting...
+          </span>
+        ) : (
+          "Submit Deletion Request"
+        )}
       </button>
 
       {successMessage ? (
-        <p className="mt-4 rounded-2xl bg-brand-50 p-4 text-sm leading-6 text-brand-700 dark:bg-brand-500/10 dark:text-brand-100">
-          {successMessage}
-        </p>
+        <div className="mt-4 rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-6 text-brand-700 dark:border-brand-500/20 dark:bg-brand-500/10 dark:text-brand-100">
+          <p className="font-semibold">Request received</p>
+          <p className="mt-1">{successMessage}</p>
+        </div>
       ) : null}
 
       {errorMessage ? (
