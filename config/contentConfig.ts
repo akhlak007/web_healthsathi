@@ -49,6 +49,7 @@ const footerLinks: NavLink[] = [
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
   { label: "Account Deletion", href: "/account-deletion" },
+  { label: "Request Account Deletion", href: "/delete-account" },
   { label: "Contact", href: "/contact" },
   { label: "Support", href: "/support" },
   { label: "Doctor Login", href: "/doctor-login" }
@@ -735,6 +736,10 @@ export const contentConfig = {
     "/account-deletion": {
       title: "Account Deletion",
       description: "Request deletion of your HealthSathi account and associated data."
+    },
+    "/delete-account": {
+      title: "Request Account Deletion",
+      description: "Submit a Google Play compliant HealthSathi account deletion request."
     },
     "/contact": {
       title: "Contact HealthSathi",
