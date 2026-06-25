@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, Stethoscope } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { contentConfig } from "@/config/contentConfig";
 
 export function Footer() {
@@ -8,11 +8,12 @@ export function Footer() {
       <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-brand-500/10 to-transparent" />
       <div className="container-shell grid gap-10 py-12 lg:grid-cols-[1.2fr_1.8fr]">
         <div>
-          <Link href="/" className="focus-ring inline-flex items-center gap-2 rounded-full">
-            <span className="grid size-10 place-items-center rounded-full bg-gradient-to-br from-brand-500 via-accent to-coral text-white shadow-glow">
-              <Stethoscope aria-hidden="true" className="size-5" />
-            </span>
-            <span className="text-lg font-bold text-navy dark:text-white">{contentConfig.site.name}</span>
+          <Link href="/" className="focus-ring inline-flex rounded-2xl">
+            <img
+              src={contentConfig.site.logoFull}
+              alt={contentConfig.site.name}
+              className="h-16 w-auto max-w-[220px] object-contain"
+            />
           </Link>
           <p className="mt-5 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-300">
             {contentConfig.footer.summary}

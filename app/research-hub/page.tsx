@@ -8,7 +8,7 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata("/research-hub");
 
-export default function ResearchPage() {
+export default function ResearchHubPage() {
   const anonymizedCases = anonymizeCaseStudies(rawResearchCases);
 
   return (

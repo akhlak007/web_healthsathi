@@ -32,16 +32,20 @@ const downloadLinks: DownloadLink[] = [
 const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
+  { label: "Mission", href: "/mission" },
   { label: "Vision", href: "/vision" },
-  { label: "Research Hub", href: "/research" },
+  { label: "Research Hub", href: "/research-hub" },
   { label: "Careers", href: "/careers" },
   { label: "Privacy Policy", href: "/privacy-policy" }
 ];
 
 const footerLinks: NavLink[] = [
+  { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
+  { label: "Mission", href: "/mission" },
   { label: "Vision", href: "/vision" },
-  { label: "Research Hub", href: "/research" },
+  { label: "Research Hub", href: "/research-hub" },
+  { label: "Careers", href: "/careers" },
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
   { label: "Account Deletion", href: "/account-deletion" },
@@ -398,6 +402,8 @@ export const contentConfig = {
     operator: "HealthSathi Team",
     url: siteUrl,
     domain: "healthsathi.com",
+    logoMark: "/healthsathi-logo-mark.png",
+    logoFull: "/healthsathi-logo.png",
     supportEmail: "healthsathi333@gmail.com",
     location: "Bangladesh",
     copyright: "© HealthSathi 2026",
@@ -444,7 +450,7 @@ export const contentConfig = {
       consentBody: "Privacy policy, erasure, anonymized research, and BMDC verification."
     },
     primaryCta: { label: "Explore the Platform", href: "/about" },
-    secondaryCta: { label: "Research Hub", href: "/research" },
+    secondaryCta: { label: "Research Hub", href: "/research-hub" },
     downloadLinks,
     mockups: [
       { title: "Patient Profile", value: "Complete history", icon: "FileHeart" },
@@ -702,6 +708,10 @@ export const contentConfig = {
       title: "About HealthSathi",
       description: "Learn about HealthSathi mission, platform goals, and healthcare ecosystem strategy."
     },
+    "/mission": {
+      title: "HealthSathi Mission",
+      description: "HealthSathi mission for consent-first digital health access across Bangladesh."
+    },
     "/vision": {
       title: "HealthSathi Vision",
       description: "Explore HealthSathi core visions for pocket healthcare, institutional integration, and AI research."
@@ -710,7 +720,7 @@ export const contentConfig = {
       title: "Doctor Login",
       description: "Secure HealthSathi access for doctors, students, and partners."
     },
-    "/research": {
+    "/research-hub": {
       title: "Research & Case Study Hub",
       description: "Explore anonymized medical cases and research insights."
     },

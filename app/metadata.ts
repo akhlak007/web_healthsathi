@@ -9,6 +9,11 @@ export const baseMetadata: Metadata = {
   },
   description: contentConfig.seo.description,
   keywords: [...contentConfig.seo.keywords],
+  icons: {
+    icon: contentConfig.site.logoMark,
+    shortcut: contentConfig.site.logoMark,
+    apple: contentConfig.site.logoMark
+  },
   alternates: {
     canonical: "/"
   },

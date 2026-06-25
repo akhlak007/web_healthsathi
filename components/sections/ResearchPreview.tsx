@@ -28,7 +28,7 @@ export function ResearchPreview() {
             ))}
           </ul>
           <div className="mt-8">
-            <PrimaryLink label={contentConfig.home.sections.researchCta} href="/research" />
+            <PrimaryLink label={contentConfig.home.sections.researchCta} href="/research-hub" />
           </div>
         </MotionReveal>
 

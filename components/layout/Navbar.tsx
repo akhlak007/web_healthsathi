@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Menu, Stethoscope, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { contentConfig } from "@/config/contentConfig";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -36,9 +36,13 @@ export function Navbar() {
       >
         <div className="flex min-h-16 items-center justify-between gap-3 px-4 sm:px-5">
           <Link href="/" className="focus-ring flex items-center gap-2 rounded-full">
-            <span className="relative grid size-10 place-items-center rounded-full bg-gradient-to-br from-brand-500 via-accent to-coral text-white shadow-glow">
-              <span className="absolute inset-0 rounded-full bg-white/20 blur-md" />
-              <Stethoscope aria-hidden="true" className="size-5" />
+            <span className="relative grid size-10 place-items-center rounded-full bg-white/80 shadow-glow ring-1 ring-white/70 backdrop-blur dark:bg-white/10 dark:ring-white/10">
+              <img
+                src={contentConfig.site.logoMark}
+                alt=""
+                aria-hidden="true"
+                className="h-9 w-9 object-contain"
+              />
             </span>
             <span className="text-base font-bold tracking-normal text-navy dark:text-white">
               {contentConfig.site.name}
@@ -107,15 +111,23 @@ export function Navbar() {
             className="border-t border-slate-100/80 px-4 pb-4 pt-2 dark:border-white/10 lg:hidden"
           >
             <div className="grid gap-1">
-              {contentConfig.nav.links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="focus-ring rounded-2xl px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-brand-50 hover:text-brand-700 dark:text-slate-200 dark:hover:bg-white/10 dark:hover:text-white"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {contentConfig.nav.links.map((link) => {
+                const active = pathname === link.href;
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`focus-ring rounded-2xl px-3 py-3 text-sm font-semibold transition ${
+                      active
+                        ? "bg-brand-50 text-brand-700 dark:bg-white/10 dark:text-white"
+                        : "text-slate-700 hover:bg-brand-50 hover:text-brand-700 dark:text-slate-200 dark:hover:bg-white/10 dark:hover:text-white"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <span className="rounded-full border border-brand-100 bg-brand-50 px-3 py-3 text-center text-xs font-semibold text-brand-700 dark:border-brand-500/20 dark:bg-brand-500/10 dark:text-brand-100">
